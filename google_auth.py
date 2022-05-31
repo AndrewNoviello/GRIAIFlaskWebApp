@@ -3,14 +3,15 @@ import os
 
 import flask
 
-from authlib.client import OAuth2Session
+#from authlib.client import OAuth2Session
+from authlib.integrations.requests_client import OAuth2Session
 import google.oauth2.credentials
 import googleapiclient.discovery
 
 ACCESS_TOKEN_URI = 'https://www.googleapis.com/oauth2/v4/token'
 AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent'
 
-AUTHORIZATION_SCOPE ='openid email profile https://www.googleapis.com/auth/drive'
+AUTHORIZATION_SCOPE ='openid email profile https://www.googleapis.com/auth/drive.file'
 
 AUTH_REDIRECT_URI = 'http://localhost:5000/google/auth'
 BASE_URI = 'http://localhost:5000'
@@ -70,7 +71,7 @@ def login():
                             scope=AUTHORIZATION_SCOPE,
                             redirect_uri=AUTH_REDIRECT_URI)
 
-    uri, state = session.authorization_url(AUTHORIZATION_URL)
+    uri, state = session.create_authorization_url(AUTHORIZATION_URL)
 
     flask.session[AUTH_STATE_KEY] = state
     flask.session.permanent = True

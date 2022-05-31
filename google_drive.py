@@ -11,12 +11,13 @@ from werkzeug.utils import secure_filename
 
 app = flask.Blueprint('google_drive', __name__)
 
+
 def build_drive_api_v3():
     credentials = build_credentials()
-    return googleapiclient.discovery.build('drive', 'v3', credentials=credentials).files()
+    return googleapiclient.discovery.build('drive', 'v3', credentials=credentials)
 
 def save_image(file_name, mime_type, file_data):
-    drive_api = build_drive_api_v3()
+    drive_api = build_drive_api_v3().files()
 
     generate_ids_result = drive_api.generateIds(count=1).execute()
     file_id = generate_ids_result['ids'][0]
@@ -57,7 +58,32 @@ def upload_file():
     mime_type = flask.request.headers['Content-Type']
     save_image(filename, mime_type, fp)
 
-    return flask.redirect('/dashboard')
+    return flask.redirect('/')
+
+@app.route('/google/moveFile', methods=['GET', 'POST'])
+def index():
+    service = build_drive_api_v3()
+    src = '17xMEyiGKCJ8m7T0oer1uVaaxohTY2XRq'
+    trg = '1VlOuYNTQ4fYGKkXpJ4gK4R0cnjtCq8lr'
+    query = f"parents = '{src}'"
+    response = service.files().list(q=query).execute()
+    files = response.get('files')
+    nextPageToken = response.get('nextPageToken')
+
+    while nextPageToken:
+        response = service.files().list(q=query, pageToken=nextPageToken).execute()
+        files.extend(response.get('files'))
+        nextPageToken = response.get('nextPageToken')
+
+    for f in files:
+        if f['mimeType'] != 'application / vnd.google-apps.folder':
+            service.files().update(
+                fileId = f.get('id'),
+                addParents = trg,
+                removeParents = src
+            ).execute()
+
+    return flask.redirect('/')
 
 @app.route('/viewIm/<file_id>', methods=['GET'])
 def view_file(file_id):
