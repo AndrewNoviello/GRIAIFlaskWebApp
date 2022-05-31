@@ -10,7 +10,7 @@ import googleapiclient.discovery
 ACCESS_TOKEN_URI = 'https://www.googleapis.com/oauth2/v4/token'
 AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent'
 
-AUTHORIZATION_SCOPE = 'openid email profile'
+AUTHORIZATION_SCOPE ='openid email profile https://www.googleapis.com/auth/drive'
 
 AUTH_REDIRECT_URI = 'http://localhost:5000/google/auth'
 BASE_URI = 'http://localhost:5000'

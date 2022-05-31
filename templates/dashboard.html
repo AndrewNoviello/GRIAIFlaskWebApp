@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>GRI AI Dashboard</title>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="row">
+          <div class="col">
+              <div class="gri_logo">
+                <img src="static/images/GRI_Logo.png" width="90%" height="auto">
+                  <p class="introText">AI-Based Species Classification Tool</p>
+              </div>
+          </div>
+          <div class="col">
+              <div class="unknownIms">
+                  <div class="classifyBtnDiv">
+                <h2>Classify New Images in Designated Folder</h2>
+                    <form>
+                        <button type="submit" class="btn btn-primary btn-block btn-large">Classify New Images</button>
+                    </form>
+              </div>
+                <h2 class="titleText">Identify Unknown Images</h2>
+                <form>
+                    <div style="width: 100%; text-align: center">
+                        <img src="static/images/IM_00105.jpg" width="90%" height="auto">
+                    </div>
+                    <label>Classification</label>
+                    <input>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+              </div>
+          </div>
+        </div>
+    </div>
+</body>
+</html>
