@@ -1,7 +1,7 @@
 # This file is used by pip to install required python packages
 # Usage: pip install -r requirements.txt
 
-authlib==0.11
+authlib
 flask
 google-api-python-client
 google-auth
