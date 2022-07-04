@@ -1,0 +1,4 @@
+/firstgrimodel_weights.pt
+/megadetector_model.pb
+*.pb
+*.pt

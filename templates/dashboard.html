@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>GRI AI Dashboard</title>
+</head>
+<body class="dashboard">
+    <div class="dashboard">
+        <center>
+          <div class="dashboardForm">
+              <div class="gri_logo">
+                <img src="static/images/GRI_Logo.png" width="90%" height="auto">
+                  <p class="introText">AI-Based Species Classification Tool</p>
+              </div>
+
+                <h2>Classify New Images in Designated Folder</h2>
+                <form action="/classify/yolo_test">
+                    <button type="submit" class="btn btn-primary btn-block btn-large">Classify New Images</button>
+                </form>
+
+                <h2 class="titleText">Identify Unknown Images</h2>
+                <p>Current Total Unknown: {{ num_files }}</p>
+                <form action="/idUnknown" method="POST">
+                    <datalist id="species_classes">
+                        {% for entry in species %}
+                        <option value="{{ entry }}">
+                        {% endfor %}
+                        </datalist>
+                    </datalist>
+                    <div style="width: 100%; text-align: center">
+                        <img src="data:image/jpeg;base64,{{ img_data }}" width="90%" height="auto">
+                    </div>
+                    </br>
+                    <input type="hidden" name="fileId" value="{{ fileId }}" />
+                    </br>
+                    <h2 class="speciesTitle">Image Contents and Classifications</h2>
+                    <div class="speciesInputs">
+                        <div class="speciesElement">
+                            <label class="speciesLabel">Species:</label>
+                            <input type="text" list="species_classes" class="speciesField" placeholder="Species" name="speciesName[]"/>
+                            <label class="speciesLabel">Number of Individuals:</label>
+                            <input type="number" class="speciesNum" name="speciesNum[]"/>
+                            <a href="javascript:void(0);" class="add-input" title="Add species"><img src="static/images/add.jpg" height="25px" style="margin: 10px"/></a>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submitButton">Submit</button>
+                </form>
+          </div>
+        </center>
+    </div>
+    <script>
+        $(document).ready(function(){
+            var max_input_fields = 10;
+            var add_input = $('.add-input');
+            var input_wrapper = $('.speciesInputs');
+            var new_input = '<div class="speciesElement"><label class="speciesLabel">Species:</label><input type="text" list="species_classes" class="speciesField" placeholder="Species" name="speciesName[]"/><label class="speciesLabel">Number of Individuals:</label><input type="number" class="speciesNum" name="speciesNum[]"/><a href="javascript:void(0);" class="remove-input" title="Remove species"><img src="static/images/remove.jpg" height="25px" style="margin: 10px"/></a></div>';
+            var add_input_count = 1;
+            $(add_input).click(function(){
+                console.log("Clicked!");
+                if(add_input_count < max_input_fields){
+                    add_input_count++;
+                    $(input_wrapper).append(new_input);
+                }
+            });
+            $(input_wrapper).on('click', '.remove-input', function(e){
+                e.preventDefault();
+                $(this).parent('div').remove();
+                add_input_count--;
+            });
+        });
+    </script>
+</body>
+</html>
